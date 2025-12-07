@@ -3,6 +3,8 @@ import numpy as np
 import math
 
 image = cv.imread(f"kao_tilt_crop.jpg")
+# error handling
+assert image is not None, "file could not be read, check with os.path.exists()"
 # https://docs.opencv.org/3.4/d9/db0/tutorial_hough_lines.html 
 img = cv.imread(f"kao_tilt_crop.jpg", cv.IMREAD_GRAYSCALE)
 

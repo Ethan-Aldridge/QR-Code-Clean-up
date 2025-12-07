@@ -2,10 +2,10 @@ import cv2 as cv
 import numpy as np
 
 # image strings for easier editing
-img_name = "qr_photo1_clahe"
+img_name = "kao_tilt_crop"
 file_ext = ".jpg"
-img_path = "qr_codes\\" + img_name
-out_path = "qr_out\\" + img_name
+img_path = "" + img_name
+out_path = "qr_out2\\" + img_name
 
 # the image object to be modified
 img = cv.imread(f"{img_path}{file_ext}", cv.IMREAD_GRAYSCALE)
@@ -27,7 +27,7 @@ cv.imwrite(f"{out_path}gaussian_d.jpg",diff_img)
 blur = cv.GaussianBlur(img,(5,5),0)
 ret3,otsu = cv.threshold(blur,0,255,cv.THRESH_BINARY+cv.THRESH_OTSU)
 
-# cv.imwrite(f"{out_path}_otsu_gauss.jpg",otsu)
+cv.imwrite(f"{out_path}_otsu_gauss.jpg",otsu)
 
 adp_gauss = cv.adaptiveThreshold(img,255,cv.ADAPTIVE_THRESH_GAUSSIAN_C,\
             cv.THRESH_BINARY,int(2*np.round(img.shape[0]/80)+3),2) # 83 = height/50->rounded to odd+2? for complex image

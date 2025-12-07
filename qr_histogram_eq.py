@@ -2,10 +2,11 @@ import cv2 as cv
 import numpy as np
 
 # image strings for easier editing
-img_name = "qr_photo1"
+img_names = ["darkened", "lightened", "kao_multi"]
+img_name = "kao_multi"
 file_ext = ".jpg"
-img_path = "qr_codes\\" + img_name
-out_path = "qr_out\\" + img_name
+img_path = "kao_qr\\" + img_name
+out_path = "kao_qr\\" + img_name
 
 img = cv.imread(f"{img_path}{file_ext}", cv.IMREAD_GRAYSCALE)
 # error handling
