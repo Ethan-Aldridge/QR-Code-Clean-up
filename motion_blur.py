@@ -26,8 +26,8 @@ def applyBlur(image, psf):
     return blurred_img
 
 image = cv2.imread('qr_codes/JpbZGw_300.jpg', cv2.IMREAD_GRAYSCALE)
-len = 5  # Example motion blur length
-theta = 10  # Example motion blur angle in degrees
+len = 15  # Example motion blur length
+theta = -30  # Example motion blur angle in degrees
 psf = calcPSF(image.shape, len, theta)
 blurred_image = applyBlur(image, psf)
 # Normalize the blurred image to 0-255

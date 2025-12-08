@@ -15,7 +15,7 @@ def calcPSF(shape, len, theta):
 
     return psf
 
-gray_image = cv2.imread('qr_codes/total2.jpg', cv2.IMREAD_GRAYSCALE)
+gray_image = cv2.imread('qr_codes/total3.jpg', cv2.IMREAD_GRAYSCALE)
 gray_image = cv2.resize(gray_image, (300, 300))
 
 ret, binarized = cv2.threshold(gray_image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
@@ -107,6 +107,10 @@ else: # top-right edge used for angle estimation
 print(f"Estimated motion blur length: {length_est}, angle: {theta_est}")
 
 psf = calcPSF((gray_image.shape[0], gray_image.shape[1]), length_est, theta_est)
+cv2.imshow('Estimated PSF', cv2.normalize(psf, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8))
+
+h_psf = np.fft.fft2(np.fft.ifftshift(psf))
+cv2.imshow('PSF FFT Magnitude', cv2.normalize(np.log(np.abs(h_psf) + 1), None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8))
 
 restored_img = wr.wiener_restore(gray_image, psf)
 ret, restored_img_binarzied = cv2.threshold(restored_img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)

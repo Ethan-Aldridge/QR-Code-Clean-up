@@ -11,7 +11,7 @@ def calcPSF(shape, R):
 
     return psf
 
-gray_image = cv2.imread('qr_codes/total1.jpg', cv2.IMREAD_GRAYSCALE)
+gray_image = cv2.imread('qr_codes/JpbZGw_300_blur10_generated.png', cv2.IMREAD_GRAYSCALE)
 gray_image = cv2.resize(gray_image, (300, 300))
 
 ret, binarized = cv2.threshold(gray_image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
@@ -63,6 +63,9 @@ R = min(abs(x2 - xQ), abs(x1 - xQ))
 print(f"Calculated defocus radius R: {R}")
 
 psf = calcPSF((gray_image.shape[0], gray_image.shape[1]), 10)
+
+h_psf = np.fft.fft2(np.fft.ifftshift(psf))
+cv2.imshow('PSF FFT Magnitude', cv2.normalize(np.log(np.abs(h_psf) + 1), None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8))
 
 restored_img = wr.wiener_restore(gray_image, psf)
 
