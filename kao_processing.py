@@ -68,10 +68,10 @@ for name in img_names:
     cv.imwrite(f"{out_names[k]}_otsu_gauss{file_ext}",otsu)
 
     adp_gauss = cv.adaptiveThreshold(img,255,cv.ADAPTIVE_THRESH_GAUSSIAN_C,\
-                cv.THRESH_BINARY,int(2*np.round(img.shape[0]/100)+3),2) # height/50->rounded to odd+2? for complex image
+                cv.THRESH_BINARY,int(2*np.round(img.shape[0]/80)+3),2) # height/40->rounded to odd+2? for complex image
     cv.imwrite(f"{out_names[k]}_adp_gauss{file_ext}",adp_gauss)
 
-    kernel = np.ones((3,3),np.uint8)
+    kernel = np.ones((5,5),np.uint8)
     morphology_ver = cv.morphologyEx(adp_gauss, cv.MORPH_CLOSE, kernel)
     morphology_ver = cv.morphologyEx(morphology_ver, cv.MORPH_OPEN, kernel)
     cv.imwrite(f"{out_names[k]}_morphology{file_ext}",morphology_ver)
@@ -96,17 +96,18 @@ k = 0 # indexing for out_names
 for name in img_names:
     img = cv.imread(name, cv.IMREAD_GRAYSCALE)
 
-    dst = cv.Canny(img, 50, 200, None, 3)
+    dst = cv.Canny(img, 50, 180, None, 3)
 
     # Copy edges to the images that will display the results in BGR
     cdstP = cv.cvtColor(dst, cv.COLOR_GRAY2BGR)
 
     linesP = cv.HoughLinesP(dst, 1, np.pi / 180, 40, None, 50, 10)
-    # find the average angle of all the lines, lines are oriented left to right
-    # so you can use inverse tangent, opposite (y_diff) over adjacent (x_diff)
-    angles = np.ndarray(len(linesP))
-
+    
     if linesP is not None:
+        # find the average angle of all the lines, lines are oriented left to right
+        # so you can use inverse tangent, opposite (y_diff) over adjacent (x_diff)
+        angles = np.ndarray(len(linesP))
+        
         for i in range(0, len(linesP)):
             l = linesP[i][0]
             cv.line(cdstP, (l[0], l[1]), (l[2], l[3]), (0,0,255), 3, cv.LINE_AA)
